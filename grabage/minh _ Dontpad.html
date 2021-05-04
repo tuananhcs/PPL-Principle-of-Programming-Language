@@ -1,0 +1,76 @@
+
+<!-- saved from url=(0023)http://dontpad.com/minh -->
+<html lang="en"><link type="text/css" rel="stylesheet" id="dark-mode-general-link"><link type="text/css" rel="stylesheet" id="dark-mode-custom-link"><style lang="en" type="text/css" id="dark-mode-custom-style"></style><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link rel="stylesheet" type="text/css" href="./minh _ Dontpad_files/dontpad-0.05.css">
+		
+		<title>minh | Dontpad</title>
+	</head>
+	<body>
+
+		<div id="noConnectionAlert" class="hide" style="display: none;">
+			Not Connected. Trying every two seconds.
+		</div>
+			
+		<div id="menu-div" style="display: block; width: 150px;">
+			<ul id="menu">				
+			<li><a href="http://dontpad.com/minh/workingholiday">workingholiday</a></li><li><a href="http://dontpad.com/minh/workingholiday1">workingholiday1</a></li><li><a href="http://dontpad.com/minh/workingholiday2">workingholiday2</a></li></ul>
+		</div>
+
+		<div id="text-div" align="center" style="width: 1361px; height: 100%;">
+			<textarea id="text">def test_1(self):
+        input = """
+            Var :a;
+        """
+        expect = 'Program([VarDecl(Id(a))])'
+        self.assertTrue(TestAST.checkASTGen(input,expect,300))
+    def test_2(self):
+        input = """
+            Var: a,b;
+        """
+        expect = 'Program([VarDecl(Id(a)),VarDecl(Id(b))])'
+        self.assertTrue(TestAST.checkASTGen(input,expect,301))
+    def test_3(self):
+        input = """
+            Var: a,b[2];
+        """
+        expect = 'Program([VarDecl(Id(a)),VarDecl(Id(b),[2])])'
+        self.assertTrue(TestAST.checkASTGen(input,expect,302))
+    def test_4(self):
+        input = """
+            Var: a,b[4]={1,2,{3,4}};
+        Var: a,b[4]={1,2,3};
+        """
+        expect = 'Program([VarDecl(Id(a)),VarDecl(Id(b),[4],ArrayLiteral(IntLiteral(1),IntLiteral(2),ArrayLiteral(IntLiteral(3),IntLiteral(4)))),VarDecl(Id(a)),VarDecl(Id(b),[4],ArrayLiteral(IntLiteral(1),IntLiteral(2),IntLiteral(3)))])'
+        self.assertTrue(TestAST.checkASTGen(input,expect,303))
+    def test_5(self):
+        input = """
+            Var: a[2][3]={1,"abc",{},{{}}},b[4]={1,2,{3,4}};
+Var: a,b[4]={1,2,3};
+        """
+        expect = 'Program([VarDecl(Id(a),[2,3],ArrayLiteral(IntLiteral(1),StringLiteral(abc),ArrayLiteral(),ArrayLiteral(ArrayLiteral()))),VarDecl(Id(b),[4],ArrayLiteral(IntLiteral(1),IntLiteral(2),ArrayLiteral(IntLiteral(3),IntLiteral(4)))),VarDecl(Id(a)),VarDecl(Id(b),[4],ArrayLiteral(IntLiteral(1),IntLiteral(2),IntLiteral(3)))])'
+        self.assertTrue(TestAST.checkASTGen(input,expect,304))
+    def test_6(self):
+        input = """
+        Var : a=1e4,b=0.0e5,c=0.00,d=0x322,e=0.12345;
+    """
+        expect ='Program([VarDecl(Id(a),FloatLiteral(1e4)),VarDecl(Id(b),FloatLiteral(0.0e5)),VarDecl(Id(c),FloatLiteral(0.00)),VarDecl(Id(d),IntLiteral(0x322)),VarDecl(Id(e),FloatLiteral(0.12345))])'
+        self.assertTrue(TestAST.checkASTGen(input,expect,305))
+ 
+   </textarea>
+		</div>
+		
+		<input type="hidden" name="lastUpdate" id="lastUpdate" value="1605538575007">
+		<script type="text/javascript" async="" src="./minh _ Dontpad_files/ga.js.download"></script><script type="text/javascript" src="./minh _ Dontpad_files/jquery.min.js.download"></script>
+		<script type="text/javascript" src="./minh _ Dontpad_files/dontpad-0.07.js.download" charset="UTF-8"></script>
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-23517037-1']);
+		  _gaq.push(['_trackPageview']);
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+	
+</body></html>

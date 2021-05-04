@@ -1,0 +1,138 @@
+import unittest
+from TestUtils import TestAST
+from AST import *
+
+class ASTGenSuite(unittest.TestCase):
+
+    def test_simple_var_declare(self):
+        """Simple var:  """
+        input = """Var: x;"""
+        expect = Program([VarDecl(Id("x"),[],None)])
+        self.assertTrue(TestAST.checkASTGen(input,expect,300))
+    def test_simple_var_declare_with_assign(self):
+        """Simple var: """
+        input = """Var: x = 10;"""
+        expect = Program([VarDecl(Id("x"),[],IntLiteral(10))])
+        self.assertTrue(TestAST.checkASTGen(input,expect,301))
+    def test_simple_var_declare_with_assign_and_dimen(self):
+        """Simple var: """
+        input = """Var: x[10] = 10;"""
+        expect = Program([VarDecl(Id("x"),[10],IntLiteral(10))])
+        self.assertTrue(TestAST.checkASTGen(input,expect,302))
+    def test_simple_var_composit_var(self):
+        """Simple var: """
+        input = """Var: a, b;"""
+        expect = Program([VarDecl(Id("a"),[],None),VarDecl(Id("b"),[],None)])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 303))
+    def test_simple_var_ele_arr(self):
+        """Simple var: """
+        input = """Var: bi[5];"""
+        expect = Program([VarDecl(Id("bi"),[5],None)])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 304))
+    def test_double_var(self):
+        """Simple var: """
+        input = """Var: a; 
+                   Var: bi[5];"""
+        expect = Program([VarDecl(Id("a"),[],None),VarDecl(Id("bi"),[5],None)])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 305))
+    def test_double_var_composit(self):
+        """Simple var: """
+        input = """Var: a, b = "Neu"; 
+                   Var: foo[5];"""
+        expect = Program([VarDecl(Id("a"),[],None),VarDecl(Id("b"),[],StringLiteral("Neu")),VarDecl(Id("foo"),[5],None)])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 306))
+    def test_var_boolean(self):
+        """Simple var: """
+        input = """Var: a = False;"""
+        expect = Program([VarDecl(Id("a"),[],BooleanLiteral("false"))])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 307))
+    def test_var_composit_with_str(self):
+        """Simple var: """
+        input = """Var: a = False, b = True;
+                Var: w ="www.google.com.vn";"""
+        expect = Program([VarDecl(Id("a"),[],BooleanLiteral("false")),VarDecl(Id("b"),[],BooleanLiteral("true")),VarDecl(Id("w"),[],StringLiteral("www.google.com.vn"))])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 308))
+
+    def test_var_with_empty_arr(self):
+        """Simple var: """
+        input = """Var: a = {};"""
+        expect = Program([VarDecl(Id("a"),[],ArrayLiteral(""))])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 309))
+    def test_var_with_arr(self):
+        """Simple var: """
+        input = """Var: a = {1};"""
+        expect = Program([VarDecl(Id("a"),[],ArrayLiteral([IntLiteral(1)]))])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 310))
+
+    def test_var_with_arr_many_dimen(self):
+        """Simple var: """
+        input = """Var: a = {1,2,{4,5}};"""
+        expect = Program([VarDecl(Id("a"),[],ArrayLiteral([IntLiteral(1),IntLiteral(2),ArrayLiteral([IntLiteral(4),IntLiteral(5)])]))])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 311))
+
+    def test_var_with_ele_and_arr(self):
+        """Simple var: """
+        input = """Var: a[4][8] = {1,2,6};"""
+        expect = Program([VarDecl(Id("a"),[4,8],ArrayLiteral([IntLiteral(1),IntLiteral(2),IntLiteral(6)]))])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 312))
+    def test_var_with_ele_and_arr_many_dimen(self):
+        """Simple var: """
+        input = """Var: bias[4][5] = {1,2,{4,5,6}};"""
+        expect = Program([VarDecl(Id("bias"),[4,5],ArrayLiteral([IntLiteral(1),IntLiteral(2),ArrayLiteral([IntLiteral(4),IntLiteral(5),IntLiteral(6)])]))])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 313))
+    def test_int_lit(self):
+        """Simple var: """
+        input = """Var: a = 0xFF;"""
+        expect = Program([VarDecl(Id(a),[],IntLiteral(255))])
+        self.assertTrue(TestAST.checkASTGen(input, expect, 314))
+    
+
+    # def test_simple_program(self):
+    #     """Simple program: int main() {} """
+    #     input = """Function: main
+    #     Body:
+    #     EndBody."""
+    #     expect = Program([VarDecl(Id("x"),[],None)])
+    #     self.assertTrue(TestAST.checkASTGen(input,expect,300))
+    # def test_simple_program(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #         Var: a = 8, b, c = {10};
+    #         Function: thanhnam_1813130
+    #         Body:
+    #         a = foo(2)[0];
+    #         foo(2);
+    #         foo(2)[3] = a+1;
+    #         a=foo(2);
+    #         EndBody.."""
+    #     expect = Program([VarDecl(Id("x"),[],None)])
+    #     self.assertTrue(TestAST.checkASTGen(input,expect,300))
+    # def test_simple_program(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #         Function: m
+    #         Body:
+    #         While d
+    #         Do
+    #             a = 8;
+    #         EndWhile.
+    #         EndBody.."""
+    #     expect = Program([VarDecl(Id("x"),[],None)])
+    #     self.assertTrue(TestAST.checkASTGen(input,expect,310))
+    # def test_simple_program1(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #         Function: m
+    #         Body:
+    #         While d
+    #         Do
+    #             Var: a = 10;
+    #             foo(10+5);
+    #         EndWhile.
+    #         EndBody.."""
+    #     expect = Program([VarDecl(Id("x"),[],None)])
+    #     self.assertTrue(TestAST.checkASTGen(input,expect,311))
+
+
+ 
+   

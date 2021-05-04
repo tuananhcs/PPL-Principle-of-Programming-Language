@@ -1,0 +1,229 @@
+# def test_atomic_var(self):
+    #     '''gobal: one atomic var'''
+    #     input = """Var:x;"""
+    #     expect=Program([VarDecl(Id('x'),[],None)])
+    #     self.assertTrue(TestAST.checkASTGen(input,expect,300))
+    # def test_many_atomic_var(self):
+    #     '''global: many atomic var'''
+    #     input = """Var:x, y, z;"""
+    #     expect=Program([VarDecl(Id('x'),[],None),VarDecl(Id('y'),[],None),VarDecl(Id('z'),[],None)])
+    #     self.assertTrue(TestAST.checkASTGen(input,expect,301))
+    # def test_var_with_value(self):
+    #     '''global: many var with value'''
+    #     input = """Var:x, y = 10, y[2][3];"""
+    #     expect=Program([VarDecl(Id('x'),[],None),VarDecl(Id('y'),[],IntLiteral(10)),VarDecl(Id('y'),[2,3],None)])
+    #     self.assertTrue(TestAST.checkASTGen(input,expect,302))
+    # def test_many_var_dels(self):
+    #     '''global: many var decls '''
+    #     input = """
+    #             Var:a,b[1][1]="string ne";
+    #             Var: hex_ne=0x123A, flag = True;
+    #             """
+    #     expect=Program([VarDecl(Id('a'),[],None),VarDecl(Id('b'),[1,1],StringLiteral('string ne')),VarDecl(Id('hex_ne'),[],IntLiteral(4666)),VarDecl(Id('flag'),[],BooleanLiteral(True))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 303))
+    # def test_array_var(self):
+    #     input = """
+    #         Var: a[1]={1,2,3};
+    #         Var: b={"string ne", {10e-2,1}};
+    #     """
+    #     expect=Program([VarDecl(Id('a'),[1],ArrayLiteral([IntLiteral(1),IntLiteral(2),IntLiteral(3)])),VarDecl(Id('b'),[],ArrayLiteral([StringLiteral('string ne'),ArrayLiteral([FloatLiteral(0.1),IntLiteral(1)])]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 304))
+ 
+    # def test_basic_program(self):
+    #     ''' no global vars, param, empty body'''
+    #     input = """
+    #     Function: main
+    #     Body:
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('main'),[],([],[]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 305))
+    # def test_simple_assign_stmt(self):
+    #     '''no global vars,one param, body: no vars, 1 assign stmt'''
+    #     input = """
+    #     Function: ppl_2
+    #     Parameter: n
+    #     Body:
+    #        a = 1;
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[VarDecl(Id('n'),[],None)],([],[Assign(Id('a'),IntLiteral(1))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 306))
+    # def test_assign_stmt(self):
+    #     '''no global vars,no param, body: no vars, many assign stmt with index_op, func_call'''
+    #     input = """
+    #     Function: ppl_2
+    #     Body:
+    #         a = 1;
+    #         foo()[1]=1;
+    #         (exp+exp)[1]=1;
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[],([],[Assign(Id('a'),IntLiteral(1)),Assign(ArrayCell(CallExpr(Id('foo'),[]),[IntLiteral(1)]),IntLiteral(1)),Assign(ArrayCell(BinaryOp('+',Id('exp'),Id('exp')),[IntLiteral(1)]),IntLiteral(1))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 307))
+    # def test_assign_with_exp(self):
+    #     '''no global vars,no param, body: no vars,  many assign stmt with index_op, func_call'''
+    #     input = """
+    #     Function: ppl_2
+    #     Body:
+    #         a = 1 && 1;
+    #         foo()[1]=a+(-1);
+    #         (exp+exp)[1]=foo()+1;
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[],([],[Assign(Id('a'),BinaryOp('&&',IntLiteral(1),IntLiteral(1))),Assign(ArrayCell(CallExpr(Id('foo'),[]),[IntLiteral(1)]),BinaryOp('+',Id('a'),UnaryOp('-',IntLiteral(1)))),Assign(ArrayCell(BinaryOp('+',Id('exp'),Id('exp')),[IntLiteral(1)]),BinaryOp('+',CallExpr(Id('foo'),[]),IntLiteral(1)))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 308))
+    # def test_composite_assign(self):
+    #     '''no global vars,no param, body: no vars,  one assign stmt with index_op, func_call'''
+    #     input = """
+    #     Function: ppl_2
+    #     Body:
+    #         a[b[1][1]][2]= - foo(1) * 2;
+    #         foo(1)[0]=bar(1,2,3);
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[],([],[Assign(ArrayCell(Id('a'),[ArrayCell(Id('b'),[IntLiteral(1),IntLiteral(1)]),IntLiteral(2)]),BinaryOp('*',UnaryOp('-',CallExpr(Id('foo'),[IntLiteral(1)])),IntLiteral(2))),Assign(ArrayCell(CallExpr(Id('foo'),[IntLiteral(1)]),[IntLiteral(0)]),CallExpr(Id('bar'),[IntLiteral(1),IntLiteral(2),IntLiteral(3)]))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 309))
+    # def test_var_and_funct(self):
+    #     '''global vars,no param, body: no vars,  many assign stmt with index_op, func_call'''
+    #     input = """
+    #     Var: a,exp="string";
+    #     Function: ppl_2
+    #     Body:
+    #         foo()[1]=a+(-1);
+    #         (exp+exp)[1]=foo()+"  PPL";
+    #     EndBody.
+    #     """
+    #     expect=Program([VarDecl(Id('a'),[],None),VarDecl(Id('exp'),[],StringLiteral('string')),FuncDecl(Id('ppl_2'),[],([],[Assign(ArrayCell(CallExpr(Id('foo'),[]),[IntLiteral(1)]),BinaryOp('+',Id('a'),UnaryOp('-',IntLiteral(1)))),Assign(ArrayCell(BinaryOp('+',Id('exp'),Id('exp')),[IntLiteral(1)]),BinaryOp('+',CallExpr(Id('foo'),[]),StringLiteral('  PPL')))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 310))
+    # def test_simple_non_fully_program(self):
+    #     '''global vars,some param, body: empty'''
+    #     input = """
+    #     Var: a,exp="string";
+    #     Function: ppl_2
+    #     Parameter: a,exp
+    #     Body:
+    #     EndBody.
+    #     """
+    #     expect=Program([VarDecl(Id('a'),[],None),VarDecl(Id('exp'),[],StringLiteral('string')),FuncDecl(Id('ppl_2'),[VarDecl(Id('a'),[],None),VarDecl(Id('exp'),[],None)],([],[]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 311))
+    # def test_simple_fully_program(self):
+    #     '''global vars,some param, body: var + one stmt'''
+    #     input = """
+    #     Var: a,exp;
+    #     Function: ppl_2
+    #     Parameter: a
+    #     Body:
+    #         Var: b="string",c[10][10];
+    #         b=a\exp;
+    #     EndBody.
+    #     """
+    #     expect=Program([VarDecl(Id('a'),[],None),VarDecl(Id('exp'),[],None),FuncDecl(Id('ppl_2'),[VarDecl(Id('a'),[],None)],([VarDecl(Id('b'),[],StringLiteral('string')),VarDecl(Id('c'),[10,10],None)],[Assign(Id('b'),BinaryOp('\\',Id('a'),Id('exp')))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 312))
+    # def test_empty_program(self):
+    #     '''no global vars,no some param, no body'''
+    #     input = """
+        
+    #     """
+    #     expect=Program([])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 313))
+    # def test_basic_if(self):
+    #     '''no global vars,no some param, body: simple if with empty stmt '''
+    #     input = """
+    #     Function: ppl_2
+    #     Body:
+    #         If x!=2 Then
+    #         EndIf.
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[],([],[If([(BinaryOp('!=',Id('x'),IntLiteral(2)),[],[])],([],[]))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 314))
+    # def test_simple_if(self):
+    #     '''no global vars,no some param, body: simple if many inside stmt no (elif & else)'''
+    #     input = """
+    #     Function: ppl_2
+    #     Body:
+    #         If x<2 Then
+    #             x=foo();
+    #             x=x+2;
+    #         EndIf.
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[],([],[If([(BinaryOp('<',Id('x'),IntLiteral(2)),[],[Assign(Id('x'),CallExpr(Id('foo'),[])),Assign(Id('x'),BinaryOp('+',Id('x'),IntLiteral(2)))])],([],[]))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 315))
+    # def test_break_stmt(self):
+    #     '''no global vars,no some param, body: simple stmt with break'''
+    #     input = """
+    #     Function: ppl_2
+    #     Body:
+    #         If x<2 Then
+    #             x=foo() =/=1;
+    #             x=x+2;
+    #         EndIf.
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[],([],[If([(BinaryOp('<',Id('x'),IntLiteral(2)),[],[Assign(Id('x'),BinaryOp('=/=',CallExpr(Id('foo'),[]),IntLiteral(1))),Assign(Id('x'),BinaryOp('+',Id('x'),IntLiteral(2)))])],([],[]))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 316))
+    # def test_basic_elif(self):
+    #     '''no global vars,no some param, body: simple if,elif no stmt,else)'''
+    #     input = """
+    #     Function: ppl_2
+    #     Body:
+    #         If x>2 Then
+    #         ElseIf x==2 Then
+    #         EndIf.
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[],([],[If([(BinaryOp('>',Id('x'),IntLiteral(2)),[],[]),(BinaryOp('==',Id('x'),IntLiteral(2)),[],[])],([],[]))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 317))
+    # def test_simple_elif(self):
+    #     '''no global vars,no some param, body: simple if,elif, stmt no else)'''
+    #     input = """
+    #     Function: ppl_2
+    #     Body:
+    #         Var:x;
+    #         If x<2 Then
+    #             x=2* -10;
+    #         ElseIf x==2 Then
+    #             x=foo() +. 10e-2;
+    #             foo()[1]= -0x123A;
+    #             Break;
+    #         EndIf.
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[],([VarDecl(Id('x'),[],None)],[If([(BinaryOp('<',Id('x'),IntLiteral(2)),[],[Assign(Id('x'),BinaryOp('*',IntLiteral(2),UnaryOp('-',IntLiteral(10))))]),(BinaryOp('==',Id('x'),IntLiteral(2)),[],[Assign(Id('x'),BinaryOp('+.',CallExpr(Id('foo'),[]),FloatLiteral(0.1))),Assign(ArrayCell(CallExpr(Id('foo'),[]),[IntLiteral(1)]),UnaryOp('-',IntLiteral(4666))),Break()])],([],[]))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 318))
+    # def test_basic_else(self):
+    #     '''no global vars,no some param, body: simple if,elif, else no stmt)'''
+    #     input = """
+    #     Function: ppl_2
+    #     Parameter:x
+    #     Body:
+    #         If x<2 Then
+    #             Break;
+    #         ElseIf x==2 Then
+    #             foo(1)[1]= -0o123;
+    #         Else 
+    #         EndIf.
+    #     EndBody.
+    #     """
+    #     expect=Program([FuncDecl(Id('ppl_2'),[VarDecl(Id('x'),[],None)],([],[If([(BinaryOp('<',Id('x'),IntLiteral(2)),[],[Break()]),(BinaryOp('==',Id('x'),IntLiteral(2)),[],[Assign(ArrayCell(CallExpr(Id('foo'),[IntLiteral(1)]),[IntLiteral(1)]),UnaryOp('-',IntLiteral(83)))])],([],[]))]))])
+    #     self.assertTrue(TestAST.checkASTGen(input, expect, 319))
+    
+    
+
+
+
+
+
+
+
+
+
+        
+    
+    
+    
+    
+    
+    
